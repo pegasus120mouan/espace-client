@@ -51,7 +51,7 @@
                         <i class="fas fa-plus mr-2"></i>Nouvelle commande
                     </button>
                     <button type="button" class="btn btn-success shadow-sm" data-toggle="modal" data-target="#printModal" style="border-radius: 25px; padding: 10px 20px; font-weight: 500; font-size: 13px;">
-                        <i class="fas fa-print mr-2"></i>Imprimer
+                        <i class="fas fa-check-circle mr-2"></i>Valider un point
                     </button>
                     <button type="button" class="btn btn-info shadow-sm text-white" data-toggle="modal" data-target="#searchModal" style="border-radius: 25px; padding: 10px 20px; font-weight: 500; font-size: 13px;">
                         <i class="fas fa-search mr-2"></i>Rechercher
@@ -59,9 +59,6 @@
                     <button type="button" class="btn btn-warning shadow-sm" style="border-radius: 25px; padding: 10px 20px; font-weight: 500; font-size: 13px;">
                         <i class="fas fa-file-excel mr-2"></i>Exporter Excel
                     </button>
-                    <div class="ml-auto d-flex align-items-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 10px 20px; border-radius: 25px; font-size: 13px; font-weight: 500;">
-                        <i class="fas fa-box mr-2"></i>Total: <strong class="ml-1">{{ $stats['total'] ?? 0 }}</strong>&nbsp;commandes
-                    </div>
                 </div>
             </div>
         </div>
@@ -110,12 +107,12 @@
             </div>
         </div>
 
-        <!-- Modal Imprimer -->
+        <!-- Modal Valider un point -->
         <div class="modal fade" id="printModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Imprimer un point</h5>
+                        <h5 class="modal-title">Valider un point</h5>
                         <button type="button" class="close" data-dismiss="modal">
                             <span>&times;</span>
                         </button>
@@ -134,58 +131,70 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Imprimer</button>
+                            <button type="submit" class="btn btn-primary">Valider</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- Modal Recherche -->
+        <!-- Modal Recherche Avancée -->
         <div class="modal fade" id="searchModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"><i class="fas fa-search mr-2"></i>Rechercher</h5>
-                        <button type="button" class="close" data-dismiss="modal">
+                    <div class="modal-header" style="background-color: #f0ad4e; color: #fff;">
+                        <h5 class="modal-title"><i class="fas fa-search mr-2"></i>Recherche avancée</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal">
                             <span>&times;</span>
                         </button>
                     </div>
                     <form action="{{ route('commandes.index') }}" method="GET">
                         <div class="modal-body">
-                            <div class="form-group">
-                                <label>Recherche</label>
-                                <input type="text" name="search" class="form-control" placeholder="ID, commune..." value="{{ request('search') }}">
-                            </div>
-                            <div class="form-group">
-                                <label>Statut</label>
-                                <select name="statut" class="form-control">
-                                    <option value="">Tous</option>
-                                    <option value="En attente" {{ request('statut') == 'En attente' ? 'selected' : '' }}>En attente</option>
-                                    <option value="En cours" {{ request('statut') == 'En cours' ? 'selected' : '' }}>En cours</option>
-                                    <option value="Livré" {{ request('statut') == 'Livré' ? 'selected' : '' }}>Livré</option>
-                                    <option value="Non livré" {{ request('statut') == 'Non livré' ? 'selected' : '' }}>Non livré</option>
-                                    <option value="Retour" {{ request('statut') == 'Retour' ? 'selected' : '' }}>Retour</option>
-                                </select>
-                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Date début</label>
-                                        <input type="date" name="date_debut" class="form-control" value="{{ request('date_debut') }}">
+                                        <label class="font-weight-bold">Communes</label>
+                                        <input type="text" name="communes" class="form-control" placeholder="Rechercher par commune" value="{{ request('communes') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Date fin</label>
-                                        <input type="date" name="date_fin" class="form-control" value="{{ request('date_fin') }}">
+                                        <label class="font-weight-bold">Statut</label>
+                                        <select name="statut" class="form-control">
+                                            <option value="">Tous les statuts</option>
+                                            <option value="En attente" {{ request('statut') == 'En attente' ? 'selected' : '' }}>En attente</option>
+                                            <option value="En cours" {{ request('statut') == 'En cours' ? 'selected' : '' }}>En cours</option>
+                                            <option value="Livré" {{ request('statut') == 'Livré' ? 'selected' : '' }}>Livré</option>
+                                            <option value="Non livré" {{ request('statut') == 'Non livré' ? 'selected' : '' }}>Non livré</option>
+                                            <option value="Retour" {{ request('statut') == 'Retour' ? 'selected' : '' }}>Retour</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Date réception</label>
+                                        <input type="date" name="date_reception" class="form-control" value="{{ request('date_reception') }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Date livraison</label>
+                                        <input type="date" name="date_livraison" class="form-control" value="{{ request('date_livraison') }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Date retour</label>
+                                        <input type="date" name="date_retour" class="form-control" value="{{ request('date_retour') }}">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="{{ route('commandes.index') }}" class="btn btn-secondary"><i class="fas fa-times mr-1"></i>Reset</a>
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-search mr-1"></i>Rechercher</button>
+                            <a href="{{ route('commandes.index') }}" class="btn btn-secondary"><i class="fas fa-sync mr-1"></i>Réinitialiser</a>
+                            <button type="submit" class="btn btn-warning"><i class="fas fa-search mr-1"></i>Rechercher</button>
                         </div>
                     </form>
                 </div>
@@ -221,16 +230,21 @@
                                     <td>{{ number_format($cmd->cout_livraison ?? 0, 0, ',', ' ') }}</td>
                                     <td>{{ number_format($cmd->cout_reel ?? 0, 0, ',', ' ') }}</td>
                                     <td>
-                                        @php
-                                            $badgeClass = match($cmd->statut) {
-                                                'Livré' => 'success',
-                                                'Non livré', 'Non Livré' => 'danger',
-                                                'Retour' => 'secondary',
-                                                'En cours' => 'primary',
-                                                default => 'warning'
-                                            };
-                                        @endphp
-                                        <span class="badge badge-{{ $badgeClass }}">{{ $cmd->statut ?? 'En attente' }}</span>
+                                        @if($cmd->statut == 'Livré')
+                                            <img src="{{ asset('img/icones/ok.png') }}" alt="Livré" style="width: 28px; height: 28px;" title="Livré">
+                                        @elseif($cmd->statut == 'Non livré' || $cmd->statut == 'Non Livré')
+                                            <img src="{{ asset('img/icones/non_ok.png') }}" alt="Non livré" style="width: 28px; height: 28px;" title="Non livré">
+                                        @elseif($cmd->statut == 'Retour')
+                                            <img src="{{ asset('img/icones/return.png') }}" alt="Retour" style="width: 28px; height: 28px;" title="Retour">
+                                        @else
+                                            @php
+                                                $badgeClass = match($cmd->statut) {
+                                                    'En cours' => 'primary',
+                                                    default => 'warning'
+                                                };
+                                            @endphp
+                                            <span class="badge badge-{{ $badgeClass }}">{{ $cmd->statut ?? 'En attente' }}</span>
+                                        @endif
                                     </td>
                                     <td>{{ $cmd->livreur ? $cmd->livreur->nom . ' ' . $cmd->livreur->prenoms : '-' }}</td>
                                     <td>{{ $cmd->date_reception ? \Carbon\Carbon::parse($cmd->date_reception)->format('d-m-Y') : '-' }}</td>
