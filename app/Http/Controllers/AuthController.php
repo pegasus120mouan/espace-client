@@ -109,14 +109,14 @@ class AuthController extends Controller
             ->whereBetween('date_livraison', [$startOfMonth, $endOfMonth])
             ->sum('cout_livraison');
 
-        // Points validés du mois
+        // Points validés du mois (basé sur statut Livré)
         $nbPointsValidesMois = \App\Models\Commande::where('utilisateur_id', $clientId)
-            ->where('point_valide', true)
-            ->whereBetween('date_validation_point', [$startOfMonth, $endOfMonth])
+            ->where('statut', 'Livré')
+            ->whereBetween('date_livraison', [$startOfMonth, $endOfMonth])
             ->count();
         $montantPointsValidesMois = (int) \App\Models\Commande::where('utilisateur_id', $clientId)
-            ->where('point_valide', true)
-            ->whereBetween('date_validation_point', [$startOfMonth, $endOfMonth])
+            ->where('statut', 'Livré')
+            ->whereBetween('date_livraison', [$startOfMonth, $endOfMonth])
             ->sum('cout_reel');
 
         // Paiements du mois
@@ -259,14 +259,14 @@ class AuthController extends Controller
             ->whereBetween('date_livraison', [$startOfYear, $endOfYear])
             ->sum('cout_livraison');
 
-        // Points validés de l'année
+        // Points validés de l'année (basé sur statut Livré)
         $nbPointsValidesAnnee = \App\Models\Commande::where('utilisateur_id', $clientId)
-            ->where('point_valide', true)
-            ->whereBetween('date_validation_point', [$startOfYear, $endOfYear])
+            ->where('statut', 'Livré')
+            ->whereBetween('date_livraison', [$startOfYear, $endOfYear])
             ->count();
         $montantPointsValidesAnnee = (int) \App\Models\Commande::where('utilisateur_id', $clientId)
-            ->where('point_valide', true)
-            ->whereBetween('date_validation_point', [$startOfYear, $endOfYear])
+            ->where('statut', 'Livré')
+            ->whereBetween('date_livraison', [$startOfYear, $endOfYear])
             ->sum('cout_reel');
 
         // Paiements de l'année
