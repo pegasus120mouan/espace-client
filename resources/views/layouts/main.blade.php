@@ -242,6 +242,13 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="{{ route('reclamations.index') }}" class="nav-link {{ request()->routeIs('reclamations.index') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-exclamation-triangle" style="color: #ffc107;"></i>
+                            <p>Mes Réclamations</p>
+                        </a>
+                    </li>
+
                     <li class="nav-header text-uppercase" style="font-size: 10px; letter-spacing: 1px; color: #8aa4af;">Compte</li>
 
                     <li class="nav-item">

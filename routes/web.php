@@ -20,4 +20,6 @@ Route::post('/commandes', [CommandeController::class, 'store'])->name('commandes
 Route::get('/commandes/print', [CommandeController::class, 'print'])->name('commandes.print');
 Route::get('/commandes/valider', [CommandeController::class, 'valider'])->name('commandes.valider');
 Route::get('/commandes/points-valides', [CommandeController::class, 'pointsValides'])->name('commandes.points-valides');
+Route::post('/commandes/reclamation', [CommandeController::class, 'reclamation'])->name('commandes.reclamation');
+Route::get('/mes-reclamations', [CommandeController::class, 'mesReclamations'])->name('reclamations.index');
 Route::get('/commandes/{id}', [CommandeController::class, 'show'])->name('commandes.show');
