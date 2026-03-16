@@ -56,9 +56,27 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     @if($point->operateur_paiement)
-                                        <span class="badge badge-info">{{ $point->operateur_paiement }}</span>
+                                        @php
+                                            $operateur = strtolower(str_replace([' ', '_'], '', $point->operateur_paiement));
+                                            $logoMap = [
+                                                'mtn' => 'mtn.png',
+                                                'mtnmoney' => 'mtn.png',
+                                                'mtnmobilemoney' => 'mtn.png',
+                                                'wave' => 'wave.png',
+                                                'orange' => 'orange.png',
+                                                'orangemoney' => 'orange.png',
+                                                'moov' => 'moov.png',
+                                                'moovmoney' => 'moov.png',
+                                            ];
+                                            $logo = $logoMap[$operateur] ?? null;
+                                        @endphp
+                                        @if($logo)
+                                            <img src="{{ asset('img/money/' . $logo) }}" alt="{{ $point->operateur_paiement }}" style="height: 45px; width: auto;">
+                                        @else
+                                            <span class="badge badge-info">{{ $point->operateur_paiement }}</span>
+                                        @endif
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif

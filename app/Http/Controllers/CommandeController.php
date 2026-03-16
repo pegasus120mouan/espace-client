@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Commande;
 use App\Models\Reclamation;
+use App\Services\SmsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -142,6 +143,11 @@ class CommandeController extends Controller
         $clientId = $client['id'] ?? null;
         $date = $request->input('date', date('Y-m-d'));
 
+        // Calculer le montant total avant la mise à jour
+        $montantTotal = Commande::where('utilisateur_id', $clientId)
+            ->whereDate('date_livraison', $date)
+            ->sum('cout_reel');
+
         // Marquer les commandes comme validées
         Commande::where('utilisateur_id', $clientId)
             ->whereDate('date_livraison', $date)
@@ -149,6 +155,24 @@ class CommandeController extends Controller
                 'point_valide' => true,
                 'date_validation_point' => now(),
             ]);
+
+        // Envoyer un SMS de notification
+        $boutique = Session::get('boutique');
+        $clientNom = $boutique['nom'] ?? ($client['nom'] ?? 'Client');
+        $dateFormatted = \Carbon\Carbon::parse($date)->format('d/m/Y');
+        $montantFormatted = number_format((float) $montantTotal, 0, ',', ' ');
+
+        $message = "Le point du {$dateFormatted} pour {$clientNom} d'un montant de {$montantFormatted} CFA a été Validé par le client.";
+
+        try {
+            SmsService::sendMessage('0787703000', $message);
+        } catch (\Throwable $e) {
+            \Log::error('SMS validation point failed', [
+                'client_id' => $clientId,
+                'date' => $date,
+                'message' => $e->getMessage(),
+            ]);
+        }
 
         return redirect()->route('commandes.index')->with('success', 'Point du ' . \Carbon\Carbon::parse($date)->format('d/m/Y') . ' validé avec succès!');
     }

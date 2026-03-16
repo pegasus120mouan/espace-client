@@ -25,20 +25,99 @@
         }
 
         .main-sidebar {
-            background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
         }
 
         .brand-link {
-            border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+            border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+            padding: 1rem !important;
+        }
+
+        .brand-link .brand-text {
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-sidebar .nav-link {
+            border-radius: 8px;
+            margin: 4px 12px;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
         }
 
         .nav-sidebar .nav-link.active {
-            background: var(--primary-color) !important;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
             color: #fff !important;
+            box-shadow: 0 4px 15px rgba(121, 150, 89, 0.4);
         }
 
-        .nav-sidebar .nav-link:hover {
-            background: rgba(255,255,255,0.1);
+        .nav-sidebar .nav-link:hover:not(.active) {
+            background: rgba(255,255,255,0.08);
+            transform: translateX(5px);
+        }
+
+        .nav-sidebar .nav-icon {
+            font-size: 1.1rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        .nav-header {
+            padding: 15px 25px 8px !important;
+            margin-top: 10px;
+            font-size: 11px !important;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            color: #5a7a8a !important;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .nav-header:first-child {
+            border-top: none;
+            margin-top: 0;
+        }
+
+        .user-panel {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin: 15px 12px !important;
+            padding: 15px !important;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .user-panel .image > div {
+            width: 45px !important;
+            height: 45px !important;
+            font-size: 16px !important;
+            box-shadow: 0 4px 10px rgba(54, 181, 143, 0.3);
+        }
+
+        .user-panel .info a {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-panel .info small {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .nav-treeview {
+            background: rgba(0,0,0,0.15);
+            border-radius: 8px;
+            margin: 5px 12px;
+            padding: 8px 0;
+        }
+
+        .nav-treeview .nav-link {
+            padding: 10px 15px;
+            margin: 2px 8px;
+            font-size: 13px;
+        }
+
+        .sidebar-mini .main-sidebar .nav-link p {
+            font-weight: 500;
         }
 
         .small-box {
@@ -142,6 +221,9 @@
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="{{ route('dashboard') }}" class="nav-link">Tableau de bord</a>
             </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="{{ route('commandes.index') }}" class="nav-link">Mes Colis</a>
+            </li>
         </ul>
 
         <ul class="navbar-nav ml-auto">
@@ -154,23 +236,23 @@
     </nav>
 
     <!-- Main Sidebar -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #1a1a2e;">
-        <a href="{{ route('dashboard') }}" class="brand-link text-center" style="background-color: #16213e; border-bottom: 1px solid #0f3460;">
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="{{ route('dashboard') }}" class="brand-link text-center">
             <span class="brand-text font-weight-bold text-white">
-                <i class="fas fa-handshake mr-2"></i>Espace Partenaire
+                <i class="fas fa-truck-fast mr-2" style="color: #36b58f;"></i>OVL <span style="color: #36b58f;">Partner</span>
             </span>
         </a>
 
         <div class="sidebar">
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="user-panel d-flex align-items-center">
                 <div class="image">
-                    <div class="img-circle elevation-2 d-flex align-items-center justify-content-center" style="width: 34px; height: 34px; background-color: #36b58f; color: #fff; font-weight: bold; font-size: 14px;">
+                    <div class="img-circle elevation-3 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #36b58f 0%, #2a9d7c 100%); color: #fff; font-weight: bold;">
                         {{ strtoupper(substr(session('client.nom', 'U'), 0, 1)) }}
                     </div>
                 </div>
-                <div class="info">
-                    <a href="#" class="text-white">{{ session('client.nom') }} {{ session('client.prenoms') }}</a>
-                    <small class="d-block" style="color: #8aa4af;">{{ session('boutique.nom') ?? 'Boutique' }}</small>
+                <div class="info ml-2">
+                    <a href="#" class="text-white d-block">{{ session('client.nom') }} {{ session('client.prenoms') }}</a>
+                    <small class="d-block" style="color: #36b58f;"><i class="fas fa-store mr-1"></i>{{ session('boutique.nom') ?? 'Boutique' }}</small>
                 </div>
             </div>
 
